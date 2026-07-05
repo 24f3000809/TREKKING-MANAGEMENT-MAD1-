@@ -18,6 +18,9 @@ class User(db.Model):
     staff_profile = db.relationship("StaffProfile", backref="user", uselist=False)
     assigned_treks = db.relationship("Trek", backref="staff", lazy=True)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
 class Trek(db.Model):
     __tablename__="treks"
     id = db.Column(db.Integer, primary_key=True)
@@ -34,6 +37,9 @@ class Trek(db.Model):
 
     bookings = db.relationship("Booking", backref="trek", lazy=True)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
 class Booking(db.Model):
     __tablename__ = "bookings"
 
@@ -43,6 +49,9 @@ class Booking(db.Model):
     booking_date = db.Column(db.DateTime)
     status = db.Column(db.String(30), default="Booked")
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
 class StaffProfile(db.Model):
     __tablename__ = "staff_profiles"
 
@@ -51,6 +60,9 @@ class StaffProfile(db.Model):
     experience = db.Column(db.Integer)
     address = db.Column(db.Text)
     emergency_contact = db.Column(db.String(20))
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 
 

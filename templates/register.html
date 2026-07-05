@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Register</title>
+</head>
+
+<body>
+
+    <h2>User Registration</h2>
+
+    <form method="POST">
+
+        <label>Name</label><br>
+        <input type="text" name="name" required><br><br>
+
+        <label>Email</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label>Phone</label><br>
+        <input type="text" name="phone" required><br><br>
+
+        <label>Password</label><br>
+        <input type="password" name="password" required><br><br>
+
+        <label>Confirm Password</label><br>
+        <input type="password" name="confirm_password" required><br><br>
+
+        <label>Role</label><br>
+
+        <select name="role" required>
+            <option value="">Select Role</option>
+            <option value="trekker">Trekker</option>
+            <option value="staff">Trek Staff</option>
+        </select>
+
+        <br><br>
+
+        <input type="submit" value="Register">
+
+    </form>
+
+</body>
+
+</html>
