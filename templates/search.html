@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+</head>
+
+<body>
+    <h1>Search</h1>
+
+    <form method="POST">
+
+        <input type="text" name="keyword" placeholder="Enter Name or ID" required>
+
+        <button type="submit">Search</button>
+
+    </form>
+
+    <hr>
+
+    {% if users %}
+
+    <h2>Users</h2>
+
+    {% for user in users %}
+
+    <p>
+
+        ID : {{ user.id }} <br>
+
+        Name : {{ user.name }}
+
+    </p>
+
+    <hr>
+
+    {% endfor %}
+
+    {% endif %}
+
+    {% if staff_members %}
+
+    <h2>Staff</h2>
+
+    {% for staff in staff_members %}
+
+    <p>
+
+        ID : {{ staff.id }} <br>
+
+        Name : {{ staff.name }}
+
+    </p>
+
+    <hr>
+
+    {% endfor %}
+
+    {% endif %}
+
+    {% if treks %}
+
+    <h2>Treks</h2>
+
+    {% for trek in treks %}
+
+    <p>
+
+        ID : {{ trek.id }} <br>
+
+        {{ trek.trek_name }}
+
+    </p>
+
+    <hr>
+
+    {% endfor %}
+
+    {% endif %}
+
+    <br>
+
+    <a href="/admin">Back to Dashboard</a>
+
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Staff</title </head>
+
+<body>
+    <h1>Manage Staff</h1>
+
+    <hr>
+
+    {% for staff in staff_members %}
+
+    <h3>{{ staff.name }}</h3>
+
+    <p>Email : {{ staff.email }}</p>
+
+    <p>Phone : {{ staff.phone }}</p>
+
+    <p>Approved :
+        {% if staff.is_approved %}
+        Yes
+        {% else %}
+        No
+        {% endif %}
+    </p>
+
+    <p>Blacklisted :
+        {% if staff.is_blacklisted %}
+        Yes
+        {% else %}
+        No
+        {% endif %}
+    </p>
+
+    <p>
+        Assigned Trek :
+        {% if staff.assigned_treks %}
+        {{ staff.assigned_treks[0].trek_name }}
+        {% else %}
+        Not Assigned
+        {% endif %}
+    </p>
+
+    {% if not staff.is_approved %}
+    <form action="/approve-staff/{{ staff.id }}" method="POST">
+        <button type="submit">Approve</button>
+    </form>
+    {% endif %}
+
+    {% if not staff.is_blacklisted %}
+    <form action="/blacklist-staff/{{ staff.id }}" method="POST">
+        <button type="submit">Blacklist</button>
+    </form>
+    {% else %}
+    <form action="/unblacklist-staff/{{ staff.id }}" method="POST">
+        <button type="submit">Remove Blacklist</button>
+    </form>
+    {% endif %}
+
+    <form action="/assign-staff/{{ staff.id }}" method="POST">
+
+        <select name="trek_id">
+
+            {% for trek in treks %}
+
+            <option value="{{ trek.id }}">
+                {{ trek.trek_name }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <button type="submit">
+            Assign Trek
+        </button>
+
+    </form>
+
+    <hr>
+
+    {% endfor %}
+
+    <br>
+
+    <a href="/admin">Back to Dashboard</a>
+
+
+</body>
+
+</html>

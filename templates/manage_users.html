@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+</head>
+
+<body>
+    <h1>Manage Users</h1>
+
+    <hr>
+
+    {% if users|length == 0 %}
+    <p>No users registered yet.</p>
+    {% endif %}
+
+    {% for user in users %}
+
+    <h3>{{ user.name }}</h3>
+
+    <p>Email : {{ user.email }}</p>
+
+    <p>Phone : {{ user.phone }}</p>
+
+    <p>
+        Blacklisted :
+        {% if user.is_blacklisted %}
+        Yes
+        {% else %}
+        No
+        {% endif %}
+    </p>
+
+    {% if not user.is_blacklisted %}
+
+    <form action="/blacklist-user/{{ user.id }}" method="POST">
+
+        <button type="submit">
+
+            Blacklist User
+
+        </button>
+
+    </form>
+
+    {% else %}
+
+    <form action="/unblacklist-user/{{ user.id }}" method="POST">
+
+        <button type="submit">
+
+            Remove Blacklist
+
+        </button>
+
+    </form>
+
+    {% endif %}
+
+    <hr>
+
+    {% endfor %}
+
+    <a href="/admin">Back to Dashboard</a>
+
+</body>
+
+</html>

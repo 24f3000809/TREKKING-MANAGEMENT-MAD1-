@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+
+<body>
+    <h1>Admin Dashboards</h1>
+
+    <hr>
+
+    <h2>Dashboard Statistics</h2>
+
+    <h3>Total Treks : {{ total_treks }}</h3>
+    <h3>Total Users : {{ total_users }}</h3>
+    <h3>Total Staff : {{ total_staff }}</h3>
+    <h3>Total Bookings : {{ total_bookings }}</h3>
+
+    <hr>
+
+    <h2>Management</h2>
+    <ul>
+        <li><a href="/search">Search</a>
+        </li>
+
+        <li><a href="/treks">Manage Treks</a>
+        </li>
+
+        <li><a href="/manage-staff">Manage Staff</a>
+        </li>
+
+        <li><a href="/manage-users">Manage Users</a>
+        </li>
+
+        <li><a href="/bookings">View Bookings</a>
+        </li>
+
+        <li><a href="/history">Trek History</a>
+        </li>
+
+        <li><a href="/logout">Logout</a>
+        </li>
+    </ul>
+
+</body>
+
+</html>

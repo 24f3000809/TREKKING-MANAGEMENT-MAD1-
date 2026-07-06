@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Trek History</title>
+</head>
+
+<body>
+
+    <h1>Trekking History</h1>
+
+    <hr>
+
+    {% if bookings|length == 0 %}
+
+    <p>No trekking history available.</p>
+
+    {% endif %}
+
+    {% for booking in bookings %}
+
+    <p>
+
+        User :
+        {{ booking.user.name }}
+
+        <br>
+
+        Trek :
+        {{ booking.trek.trek_name }}
+
+        <br>
+
+        Booking Date :
+        {{ booking.booking_date }}
+
+        <br>
+
+        Status :
+        {{ booking.status }}
+
+    </p>
+
+    <hr>
+
+    {% endfor %}
+
+    <a href="/admin">Back to Dashboard</a>
+
+</body>
+
+</html>

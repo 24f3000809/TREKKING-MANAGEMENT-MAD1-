@@ -21,6 +21,7 @@ class User(db.Model):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+
 class Trek(db.Model):
     __tablename__="treks"
     id = db.Column(db.Integer, primary_key=True)
@@ -31,7 +32,7 @@ class Trek(db.Model):
     available_slots = db.Column(db.Integer, nullable=False)
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
-    status = db.Column(db.String(100),nullable=False,default="pending")
+    status = db.Column(db.String(100),nullable=False,default="Pending")
     description = db.Column(db.Text, nullable=False)
     assigned_staff_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
@@ -39,6 +40,8 @@ class Trek(db.Model):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+
 
 class Booking(db.Model):
     __tablename__ = "bookings"
@@ -63,6 +66,7 @@ class StaffProfile(db.Model):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
 
 
 

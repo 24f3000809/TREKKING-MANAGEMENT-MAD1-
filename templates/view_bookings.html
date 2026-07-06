@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Booking Management</title>
+</head>
+
+<body>
+
+    <h1>All Bookings</h1>
+
+    <hr>
+
+    {% if bookings|length == 0 %}
+
+    <p>No bookings found.</p>
+
+    {% endif %}
+
+    {% for booking in bookings %}
+
+    <p>
+
+        Booking ID : {{ booking.id }} <br>
+
+        User : {{ booking.user.name }} <br>
+
+        Trek : {{ booking.trek.trek_name }} <br>
+
+        Booking Date : {{ booking.booking_date }} <br>
+
+        Status : {{ booking.status }}
+
+    </p>
+
+    <hr>
+
+    {% endfor %}
+
+    <a href="/admin">Back to Dashboard</a>
+
+</body>
+
+</html>
