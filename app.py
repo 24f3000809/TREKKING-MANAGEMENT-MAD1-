@@ -140,7 +140,76 @@ def staff_dashboard():
     if session["role"] != "staff":
         return "Access Denied"
 
-    return "<h1>Staff Dashboard</h1>"
+    staff_id = session["user_id"]
+
+    assigned_treks = Trek.query.filter_by(
+        assigned_staff_id=staff_id
+    ).all()
+
+    participant_count = {}
+
+    for trek in assigned_treks:
+        participant_count[trek.id] = Booking.query.filter_by(
+            trek_id=trek.id
+        ).count()
+
+    return render_template(
+        "staff_dashboard.html",
+        assigned_treks=assigned_treks,
+        participant_count=participant_count
+    )
+
+@app.route("/update-trek/<int:trek_id>", methods=["GET", "POST"])
+def update_trek(trek_id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session["role"] != "staff":
+        return "Access Denied"
+
+    trek = Trek.query.get_or_404(trek_id)
+
+    if trek.assigned_staff_id != session["user_id"]:
+        return "Access Denied"
+
+    if request.method == "POST":
+
+        trek.available_slots = int(request.form["available_slots"])
+        trek.status = request.form["status"]
+
+        db.session.commit()
+
+        return redirect("/staff")
+
+    return render_template(
+        "update_trek.html",
+        trek=trek
+    )
+
+@app.route("/participants/<int:trek_id>")
+def participants(trek_id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session["role"] != "staff":
+        return "Access Denied"
+
+    trek = Trek.query.get_or_404(trek_id)
+
+    if trek.assigned_staff_id != session["user_id"]:
+        return "Access Denied"
+
+    bookings = Booking.query.filter_by(
+        trek_id=trek.id
+    ).all()
+
+    return render_template(
+        "participants.html",
+        trek=trek,
+        bookings=bookings
+    )
 
 
 @app.route("/manage-staff")
