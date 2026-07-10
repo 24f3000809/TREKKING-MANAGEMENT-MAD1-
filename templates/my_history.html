@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My Trek History</title>
+</head>
+
+<body>
+
+    <h1>My Trek History</h1>
+
+    {% if bookings %}
+
+    <table border="1">
+
+        <tr>
+
+            <th>Trek</th>
+            <th>Booking Date</th>
+            <th>Booking Status</th>
+            <th>Trek Status</th>
+
+        </tr>
+
+        {% for booking in bookings %}
+
+        <tr>
+
+            <td>{{ booking.trek.trek_name }}</td>
+
+            <td>{{ booking.booking_date }}</td>
+
+            <td>{{ booking.status }}</td>
+
+            <td>{{ booking.trek.status }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <p>No trekking history.</p>
+
+    {% endif %}
+
+</body>
+
+</html>

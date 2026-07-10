@@ -178,6 +178,14 @@ def update_trek(trek_id):
         trek.available_slots = int(request.form["available_slots"])
         trek.status = request.form["status"]
 
+        if trek.status == "Completed":
+            bookings = Booking.query.filter_by(
+                trek_id=trek.id
+            ).all()
+
+            for booking in bookings:
+                booking.status = "Completed"
+
         db.session.commit()
 
         return redirect("/staff")
@@ -468,6 +476,33 @@ def book_trek(trek_id):
 
     return redirect("/user")
 
+@app.route("/cancel-booking/<int:booking_id>", methods=["POST"])
+def cancel_booking(booking_id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session["role"] != "user":
+        return "Access Denied"
+
+    booking = Booking.query.get_or_404(booking_id)
+
+    if booking.user_id != session["user_id"]:
+        return "Access Denied"
+
+    if booking.status == "Completed":
+        return "Completed bookings cannot be cancelled."
+
+    if booking.status == "Cancelled":
+        return "Booking is already cancelled."
+
+    booking.status = "Cancelled"
+
+    booking.trek.available_slots += 1
+
+    db.session.commit()
+
+    return redirect("/user")
 @app.route("/edit-profile", methods=["GET", "POST"])
 def edit_profile():
 
@@ -623,6 +658,26 @@ def trek_history():
         "trek_history.html",
         bookings=bookings
     )
+
+@app.route("/my-history")
+def my_history():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session["role"] != "user":
+        return "Access Denied"
+
+    bookings = Booking.query.filter_by(
+        user_id=session["user_id"]
+    ).all()
+
+    return render_template(
+        "my_history.html",
+        bookings=bookings
+    )
+
+
 
 @app.route("/logout")
 def logout():

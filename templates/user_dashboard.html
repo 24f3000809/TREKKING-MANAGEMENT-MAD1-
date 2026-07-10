@@ -15,6 +15,12 @@
 
     <br><br>
 
+    <a href="/my-history">
+        <button>My Trek History</button>
+    </a>
+
+    <br><br>
+
     <h2>Search Treks</h2>
 
     <form method="GET">
@@ -103,11 +109,10 @@
     <table border="1" cellpadding="8">
 
         <tr>
-
             <th>Trek</th>
             <th>Booking Date</th>
             <th>Status</th>
-
+            <th>Action</th>
         </tr>
 
         {% for booking in booked_treks %}
@@ -119,6 +124,26 @@
             <td>{{ booking.booking_date }}</td>
 
             <td>{{ booking.status }}</td>
+
+            <td>
+
+                {% if booking.status == "Booked" %}
+
+                <form action="/cancel-booking/{{ booking.id }}" method="POST">
+
+                    <button type="submit">
+                        Cancel Booking
+                    </button>
+
+                </form>
+
+                {% else %}
+
+                -
+
+                {% endif %}
+
+            </td>
 
         </tr>
 
