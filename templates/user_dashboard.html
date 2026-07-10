@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Dashboard</title>
+</head>
+
+<body>
+
+    <h1>Welcome {{ session["user_name"] }}</h1>
+
+    <a href="/edit-profile">
+        <button>Edit Profile</button>
+    </a>
+
+    <br><br>
+
+    <h2>Search Treks</h2>
+
+    <form method="GET">
+
+        <input type="text" name="search" placeholder="Search Trek">
+
+        <select name="difficulty">
+
+            <option value="">All Difficulties</option>
+
+            <option value="Easy">Easy</option>
+            <option value="Moderate">Moderate</option>
+            <option value="Hard">Hard</option>
+
+        </select>
+
+        <input type="text" name="location" placeholder="Location">
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+    <hr>
+
+    <h2>Available Treks</h2>
+
+    {% if available_treks %}
+
+    <table border="1" cellpadding="8">
+
+        <tr>
+
+            <th>Name</th>
+            <th>Location</th>
+            <th>Difficulty</th>
+            <th>Duration</th>
+            <th>Slots</th>
+            <th>Action</th>
+
+        </tr>
+
+        {% for trek in available_treks %}
+
+        <tr>
+
+            <td>{{ trek.trek_name }}</td>
+            <td>{{ trek.location }}</td>
+            <td>{{ trek.difficulty }}</td>
+            <td>{{ trek.duration }}</td>
+            <td>{{ trek.available_slots }}</td>
+
+            <td>
+
+                <form action="/book/{{ trek.id }}" method="POST">
+
+                    <button type="submit">
+
+                        Book Trek
+
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <p>No treks available.</p>
+
+    {% endif %}
+
+    <hr>
+
+    <h2>My Bookings</h2>
+
+    {% if booked_treks %}
+
+    <table border="1" cellpadding="8">
+
+        <tr>
+
+            <th>Trek</th>
+            <th>Booking Date</th>
+            <th>Status</th>
+
+        </tr>
+
+        {% for booking in booked_treks %}
+
+        <tr>
+
+            <td>{{ booking.trek.trek_name }}</td>
+
+            <td>{{ booking.booking_date }}</td>
+
+            <td>{{ booking.status }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <p>No bookings yet.</p>
+
+    {% endif %}
+
+</body>
+
+</html>

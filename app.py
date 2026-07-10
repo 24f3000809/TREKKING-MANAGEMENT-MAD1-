@@ -387,7 +387,6 @@ def delete_trek(trek_id):
 
     return redirect("/treks")
 
-
 @app.route("/user")
 def user_dashboard():
 
@@ -397,7 +396,104 @@ def user_dashboard():
     if session["role"] != "user":
         return "Access Denied"
 
-    return "<h1>User Dashboard</h1>"
+    search = request.args.get("search", "")
+    difficulty = request.args.get("difficulty", "")
+    location = request.args.get("location", "")
+
+    query = Trek.query.filter(Trek.status == "Open")
+
+    if search:
+        query = query.filter(
+            Trek.trek_name.ilike(f"%{search}%")
+        )
+
+    if difficulty:
+        query = query.filter(
+            Trek.difficulty == difficulty
+        )
+
+    if location:
+        query = query.filter(
+            Trek.location.ilike(f"%{location}%")
+        )
+
+    available_treks = query.all()
+
+    booked_treks = Booking.query.filter_by(
+        user_id=session["user_id"]
+    ).all()
+
+    return render_template(
+        "user_dashboard.html",
+        available_treks=available_treks,
+        booked_treks=booked_treks
+    )
+
+@app.route("/book/<int:trek_id>", methods=["POST"])
+def book_trek(trek_id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session["role"] != "user":
+        return "Access Denied"
+
+    trek = Trek.query.get_or_404(trek_id)
+
+    if trek.status != "Open":
+        return "Booking is allowed only for Open treks."
+
+    if trek.available_slots <= 0:
+        return "No slots available"
+    existing_booking = Booking.query.filter_by(
+        user_id=session["user_id"],
+        trek_id=trek.id
+    ).first()
+
+    if existing_booking:
+        return "You have already booked this trek."
+
+    booking = Booking(
+        user_id=session["user_id"],
+        trek_id=trek.id,
+        booking_date=datetime.now(),
+        status="Booked"
+    )
+
+    db.session.add(booking)
+
+    trek.available_slots -= 1
+
+    db.session.commit()
+
+    return redirect("/user")
+
+@app.route("/edit-profile", methods=["GET", "POST"])
+def edit_profile():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session["role"] != "user":
+        return "Access Denied"
+
+    user = User.query.get_or_404(session["user_id"])
+
+    if request.method == "POST":
+
+        user.name = request.form["name"]
+        user.phone = request.form["phone"]
+
+        db.session.commit()
+
+        session["user_name"] = user.name
+
+        return redirect("/user")
+
+    return render_template(
+        "edit_profile.html",
+        user=user
+    )
 
 @app.route("/manage-users")
 def manage_users():
