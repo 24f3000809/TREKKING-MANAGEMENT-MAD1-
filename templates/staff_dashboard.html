@@ -1,66 +1,117 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff Dashboard</title>
-</head>
+{% block title %}
+Staff Dashboard
+{% endblock %}
 
-<body>
-    <h1>Staff Dashboard</h1>
+{% block content %}
 
-    <h2>Your Assigned Treks</h2>
+<h2 class="text-center mb-3">
+    Staff Dashboard
+</h2>
 
-    {% if assigned_treks %}
+<p class="text-center text-muted mb-5">
+    Welcome, {{ session["user_name"] }}! Manage your assigned treks and participants.
+</p>
 
-    <table border="1" cellpadding="8">
+{% if assigned_treks %}
 
-        <tr>
-            <th>Trek Name</th>
-            <th>Location</th>
-            <th>Status</th>
-            <th>Available Slots</th>
-            <th>Participants</th>
-            <th>Actions</th>
-        </tr>
+<div class="row">
 
-        {% for trek in assigned_treks %}
+    {% for trek in assigned_treks %}
 
-        <tr>
+    <div class="col-md-6 col-lg-4 mb-4">
 
-            <td>{{ trek.trek_name }}</td>
+        <div class="card shadow h-100">
 
-            <td>{{ trek.location }}</td>
+            <div class="card-body">
 
-            <td>{{ trek.status }}</td>
+                <h4 class="card-title">
+                    {{ trek.trek_name }}
+                </h4>
 
-            <td>{{ trek.available_slots }}</td>
+                <p class="mb-2">
+                    <strong>Location:</strong>
+                    {{ trek.location }}
+                </p>
 
-            <td>{{ participant_count[trek.id] }}</td>
+                <p class="mb-2">
+                    <strong>Status:</strong>
 
-            <td>
-                <a href="/update-trek/{{ trek.id }}">
-                    <button>Update Trek</button>
-                </a>
+                    {% if trek.status == "Open" %}
 
-                <a href="/participants/{{ trek.id }}">
-                    <button>Participants</button>
-                </a>
-            </td>
+                    <span class="badge bg-success">
+                        Open
+                    </span>
 
-        </tr>
+                    {% elif trek.status == "Closed" %}
 
-        {% endfor %}
+                    <span class="badge bg-danger">
+                        Closed
+                    </span>
 
-    </table>
+                    {% elif trek.status == "Completed" %}
 
-    {% else %}
+                    <span class="badge bg-secondary">
+                        Completed
+                    </span>
 
-    <p>No treks assigned yet.</p>
+                    {% else %}
 
-    {% endif %}
+                    <span class="badge bg-warning text-dark">
+                        {{ trek.status }}
+                    </span>
 
-</body>
+                    {% endif %}
 
-</html>
+                </p>
+
+                <p class="mb-2">
+                    <strong>Available Slots:</strong>
+                    {{ trek.available_slots }}
+                </p>
+
+                <p class="mb-4">
+                    <strong>Participants:</strong>
+                    {{ participant_count[trek.id] }}
+                </p>
+
+                <div class="d-grid gap-2">
+
+                    <a href="/update-trek/{{ trek.id }}" class="btn btn-outline-success">
+                        <i class="bi bi-pencil-square"></i>
+                        Update Trek
+                    </a>
+
+                    <a href="/participants/{{ trek.id }}" class="btn btn-outline-primary">
+                        <i class="bi bi-people-fill"></i>
+                        View Participants
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="alert alert-info text-center">
+
+    <h5>No Treks Assigned</h5>
+
+    <p class="mb-0">
+        You have not been assigned any treks yet.
+    </p>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

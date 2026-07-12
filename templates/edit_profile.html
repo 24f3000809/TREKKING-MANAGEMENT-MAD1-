@@ -1,38 +1,63 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <title>Edit Profile</title>
-</head>
+{% block title %}
+Edit Profile
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Edit Profile</h1>
+<div class="row justify-content-center">
 
-    <form method="POST">
+    <div class="col-md-6">
 
-        <label>Name</label>
+        <div class="card shadow">
 
-        <input type="text" name="name" value="{{ user.name }}" required>
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">
+                    Edit Profile
+                </h4>
+            </div>
 
-        <br><br>
+            <div class="card-body">
 
-        <label>Phone</label>
+                <form method="POST">
 
-        <input type="text" name="phone" value="{{ user.phone }}" required>
+                    <div class="mb-3">
 
-        <br><br>
+                        <label class="form-label">
+                            Name
+                        </label>
 
-        <button type="submit">
-            Update Profile
-        </button>
+                        <input type="text" name="name" value="{{ user.name }}" class="form-control" required>
 
-    </form>
+                    </div>
 
-    <br>
+                    <div class="mb-3">
 
-    <a href="/user">Back</a>
+                        <label class="form-label">
+                            Phone
+                        </label>
 
-</body>
+                        <input type="text" name="phone" value="{{ user.phone }}" class="form-control" required>
 
-</html>
+                    </div>
+
+                    <button class="btn btn-success">
+                        Update Profile
+                    </button>
+
+                    <a href="/user" class="btn btn-secondary">
+                        Back
+                    </a>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

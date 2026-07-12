@@ -1,89 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search</title>
-</head>
+{% block title %}
+Search
+{% endblock %}
 
-<body>
-    <h1>Search</h1>
+{% block content %}
 
-    <form method="POST">
+<h2 class="text-center mb-4">
+    Search
+</h2>
 
-        <input type="text" name="keyword" placeholder="Enter Name or ID" required>
+<div class="card shadow mb-4">
 
-        <button type="submit">Search</button>
+    <div class="card-body">
 
-    </form>
+        <form method="POST" class="row g-3">
 
-    <hr>
+            <div class="col-md-10">
 
-    {% if users %}
+                <input type="text" name="keyword" class="form-control" placeholder="Search by Name or ID" required>
 
-    <h2>Users</h2>
+            </div>
+
+            <div class="col-md-2">
+
+                <button class="btn btn-success w-100">
+
+                    Search
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% if users %}
+
+<h4>Users</h4>
+
+<ul class="list-group mb-4">
 
     {% for user in users %}
 
-    <p>
+    <li class="list-group-item">
 
-        ID : {{ user.id }} <br>
+        <strong>{{ user.name }}</strong>
 
-        Name : {{ user.name }}
+        (ID: {{ user.id }})
 
-    </p>
-
-    <hr>
+    </li>
 
     {% endfor %}
 
-    {% endif %}
+</ul>
 
-    {% if staff_members %}
+{% endif %}
 
-    <h2>Staff</h2>
+{% if staff_members %}
+
+<h4>Staff</h4>
+
+<ul class="list-group mb-4">
 
     {% for staff in staff_members %}
 
-    <p>
+    <li class="list-group-item">
 
-        ID : {{ staff.id }} <br>
+        <strong>{{ staff.name }}</strong>
 
-        Name : {{ staff.name }}
+        (ID: {{ staff.id }})
 
-    </p>
-
-    <hr>
+    </li>
 
     {% endfor %}
 
-    {% endif %}
+</ul>
 
-    {% if treks %}
+{% endif %}
 
-    <h2>Treks</h2>
+{% if treks %}
+
+<h4>Treks</h4>
+
+<ul class="list-group mb-4">
 
     {% for trek in treks %}
 
-    <p>
+    <li class="list-group-item">
 
-        ID : {{ trek.id }} <br>
+        <strong>{{ trek.trek_name }}</strong>
 
-        {{ trek.trek_name }}
+        (ID: {{ trek.id }})
 
-    </p>
-
-    <hr>
+    </li>
 
     {% endfor %}
 
-    {% endif %}
+</ul>
 
-    <br>
+{% endif %}
 
-    <a href="/admin">Back to Dashboard</a>
+<div class="text-center">
 
-</body>
+    <a href="/admin" class="btn btn-secondary">
+        Back to Dashboard
+    </a>
 
-</html>
+</div>
+
+{% endblock %}

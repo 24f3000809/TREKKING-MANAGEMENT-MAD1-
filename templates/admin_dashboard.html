@@ -1,50 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-</head>
+{% block title %}
+Admin Dashboard
+{% endblock %}
 
-<body>
-    <h1>Admin Dashboards</h1>
+{% block content %}
 
-    <hr>
+<h2 class="text-center mb-3">
+    Admin Dashboard
+</h2>
 
-    <h2>Dashboard Statistics</h2>
+<p class="text-center text-muted mb-5">
+    Welcome, {{ session["user_name"] }}!
+</p>
 
-    <h3>Total Treks : {{ total_treks }}</h3>
-    <h3>Total Users : {{ total_users }}</h3>
-    <h3>Total Staff : {{ total_staff }}</h3>
-    <h3>Total Bookings : {{ total_bookings }}</h3>
+<div class="row g-4">
 
-    <hr>
+    <div class="col-md-6 col-lg-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h5>Total Treks</h5>
+                <h2>{{ total_treks }}</h2>
+            </div>
+        </div>
+    </div>
 
-    <h2>Management</h2>
-    <ul>
-        <li><a href="/search">Search</a>
-        </li>
+    <div class="col-md-6 col-lg-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h5>Total Users</h5>
+                <h2>{{ total_users }}</h2>
+            </div>
+        </div>
+    </div>
 
-        <li><a href="/treks">Manage Treks</a>
-        </li>
+    <div class="col-md-6 col-lg-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h5>Total Staff</h5>
+                <h2>{{ total_staff }}</h2>
+            </div>
+        </div>
+    </div>
 
-        <li><a href="/manage-staff">Manage Staff</a>
-        </li>
+    <div class="col-md-6 col-lg-3">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h5>Total Bookings</h5>
+                <h2>{{ total_bookings }}</h2>
+            </div>
+        </div>
+    </div>
 
-        <li><a href="/manage-users">Manage Users</a>
-        </li>
+</div>
 
-        <li><a href="/bookings">View Bookings</a>
-        </li>
-
-        <li><a href="/history">Trek History</a>
-        </li>
-
-        <li><a href="/logout">Logout</a>
-        </li>
-    </ul>
-
-</body>
-
-</html>
+{% endblock %}

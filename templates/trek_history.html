@@ -1,52 +1,110 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <title>Trek History</title>
-</head>
+{% block title %}
+Trek History
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Trekking History</h1>
+<h2 class="text-center mb-4">
+    Trekking History
+</h2>
 
-    <hr>
+{% if bookings %}
 
-    {% if bookings|length == 0 %}
+<div class="card shadow">
 
-    <p>No trekking history available.</p>
+    <div class="card-body">
 
-    {% endif %}
+        <div class="table-responsive">
 
-    {% for booking in bookings %}
+            <table class="table table-hover align-middle">
 
-    <p>
+                <thead class="table-dark">
 
-        User :
-        {{ booking.user.name }}
+                    <tr>
 
-        <br>
+                        <th>User</th>
+                        <th>Trek</th>
+                        <th>Booking Date</th>
+                        <th>Status</th>
 
-        Trek :
-        {{ booking.trek.trek_name }}
+                    </tr>
 
-        <br>
+                </thead>
 
-        Booking Date :
-        {{ booking.booking_date }}
+                <tbody>
 
-        <br>
+                    {% for booking in bookings %}
 
-        Status :
-        {{ booking.status }}
+                    <tr>
 
-    </p>
+                        <td>{{ booking.user.name }}</td>
 
-    <hr>
+                        <td>{{ booking.trek.trek_name }}</td>
 
-    {% endfor %}
+                        <td>{{ booking.booking_date }}</td>
 
-    <a href="/admin">Back to Dashboard</a>
+                        <td>
 
-</body>
+                            {% if booking.status == "Booked" %}
 
-</html>
+                            <span class="badge bg-success">
+                                Booked
+                            </span>
+
+                            {% elif booking.status == "Cancelled" %}
+
+                            <span class="badge bg-danger">
+                                Cancelled
+                            </span>
+
+                            {% elif booking.status == "Completed" %}
+
+                            <span class="badge bg-secondary">
+                                Completed
+                            </span>
+
+                            {% else %}
+
+                            <span class="badge bg-warning text-dark">
+                                {{ booking.status }}
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-info">
+
+    No trekking history available.
+
+</div>
+
+{% endif %}
+
+<div class="text-center mt-4">
+
+    <a href="/admin" class="btn btn-secondary">
+        Back to Dashboard
+    </a>
+
+</div>
+
+{% endblock %}

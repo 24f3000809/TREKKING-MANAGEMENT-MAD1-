@@ -1,57 +1,85 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <title>Participants</title>
-</head>
+{% block title %}
+Participants
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>{{ trek.trek_name }}</h1>
+<h2 class="text-center mb-4">
 
-    <h2>Participants</h2>
+    {{ trek.trek_name }} Participants
 
-    {% if bookings %}
+</h2>
 
-    <table border="1" cellpadding="8">
+{% if bookings %}
 
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Booking Date</th>
-            <th>Status</th>
-        </tr>
+<div class="table-responsive">
 
-        {% for booking in bookings %}
+    <table class="table table-hover">
 
-        <tr>
+        <thead class="table-dark">
 
-            <td>{{ booking.user.name }}</td>
+            <tr>
 
-            <td>{{ booking.user.email }}</td>
+                <th>Name</th>
 
-            <td>{{ booking.booking_date }}</td>
+                <th>Email</th>
 
-            <td>{{ booking.status }}</td>
+                <th>Booking Date</th>
 
-        </tr>
+                <th>Status</th>
 
-        {% endfor %}
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for booking in bookings %}
+
+            <tr>
+
+                <td>{{ booking.user.name }}</td>
+
+                <td>{{ booking.user.email }}</td>
+
+                <td>{{ booking.booking_date }}</td>
+
+                <td>
+
+                    <span class="badge bg-success">
+
+                        {{ booking.status }}
+
+                    </span>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
 
     </table>
 
-    {% else %}
+</div>
 
-    <p>No participants registered yet.</p>
+{% else %}
 
-    {% endif %}
+<div class="alert alert-info">
 
-    <br>
+    No participants registered yet.
 
-    <a href="/staff">
-        Back
-    </a>
+</div>
 
-</body>
+{% endif %}
 
-</html>
+<a href="/staff" class="btn btn-secondary">
+
+    Back
+
+</a>
+
+{% endblock %}

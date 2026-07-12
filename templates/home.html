@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home | Trekking Management
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8 text-center">
+
+            <h1 class="display-4 fw-bold mb-4">
+                Discover Your Next Adventure
+            </h1>
+
+            <p class="lead mb-4">
+                Explore beautiful trekking destinations, book exciting adventures, and make unforgettable memories with
+                our Trekking Management Application.
+            </p>
+
+            {% if session.get("user_id") %}
+
+            {% if session.get("role") == "admin" %}
+
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-success btn-lg me-2">
+                Go to Dashboard
+            </a>
+
+            {% elif session.get("role") == "staff" %}
+
+            <a href="{{ url_for('staff_dashboard') }}" class="btn btn-success btn-lg me-2">
+                Go to Dashboard
+            </a>
+
+            {% else %}
+
+            <a href="{{ url_for('user_dashboard') }}" class="btn btn-success btn-lg me-2">
+                Explore Treks
+            </a>
+
+            {% endif %}
+
+            {% else %}
+
+            <a href="{{ url_for('register') }}" class="btn btn-success btn-lg me-2">
+                Get Started
+            </a>
+
+            <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+                Login
+            </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="mt-5">
+
+    <h2 class="text-center mb-5">
+        Why Choose Us?
+    </h2>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card h-100 feature-card">
+
+                <div class="card-body text-center">
+
+                    <i class="bi bi-tree-fill display-4 text-success"></i>
+
+                    <h4 class="mt-3">
+                        Beautiful Locations
+                    </h4>
+
+                    <p>
+                        Discover scenic trekking routes across breathtaking landscapes.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card h-100 feature-card">
+
+                <div class="card-body text-center">
+
+                    <i class="bi bi-shield-check display-4 text-success"></i>
+
+                    <h4 class="mt-3">
+                        Safe Adventures
+                    </h4>
+
+                    <p>
+                        Every trek is managed by approved trek staff for a safe experience.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card h-100 feature-card">
+
+                <div class="card-body text-center">
+
+                    <i class="bi bi-people-fill display-4 text-success"></i>
+
+                    <h4 class="mt-3">
+                        Easy Booking
+                    </h4>
+
+                    <p>
+                        Search, book, and manage your trekking journey with just a few clicks.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="mt-5">
+
+    <h2 class="text-center mb-4">
+        Trek Categories
+    </h2>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card text-center shadow-sm">
+
+                <div class="card-body">
+
+                    <h4 class="text-success">
+                        Easy
+                    </h4>
+
+                    <p>
+                        Perfect for beginners and family trips.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card text-center shadow-sm">
+
+                <div class="card-body">
+
+                    <h4 class="text-warning">
+                        Moderate
+                    </h4>
+
+                    <p>
+                        Great for regular trekkers seeking adventure.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card text-center shadow-sm">
+
+                <div class="card-body">
+
+                    <h4 class="text-danger">
+                        Hard
+                    </h4>
+
+                    <p>
+                        Challenging treks for experienced explorers.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

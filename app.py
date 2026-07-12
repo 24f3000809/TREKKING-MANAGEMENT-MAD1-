@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session 
+from flask import Flask, render_template, request, redirect, session, flash, url_for
 from config import Config
 from models import db, User, Trek, Booking, StaffProfile
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -31,7 +31,7 @@ with app.app_context():
 
 @app.route("/")
 def home():
-    return "<h1>Trekking Management Application</h1>"
+    return render_template("home.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -46,12 +46,14 @@ def register():
         role = request.form["role"]
 
         if password != confirm_password:
-            return "Passwords do not match"
+            flash("Passwords do not match.", "danger")
+            return redirect(url_for("register"))
 
         existing_user = User.query.filter_by(email=email).first()
 
         if existing_user:
-            return "Email already exists"
+            flash("Email already exists.", "danger")
+            return redirect(url_for("register"))
 
         if role == "staff":
             approval = False
@@ -70,7 +72,12 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
-        return redirect("/")
+        if role == "staff":
+            flash("Registration successful! Please wait for admin approval.", "info")
+        else:
+            flash("Registration successful! Please login.", "success")
+
+        return redirect(url_for("login"))
 
     return render_template("register.html")
 
@@ -85,29 +92,35 @@ def login():
         user = User.query.filter_by(email=email).first()
 
         if not user:
-            return "User does not exist"
+            flash("User does not exist.", "danger")
+            return redirect(url_for("login"))
 
         if not check_password_hash(user.password, password):
-            return "Incorrect Password"
+            flash("Incorrect password.", "danger")
+            return redirect(url_for("login"))
 
         if user.is_blacklisted:
-            return "You are blacklisted"
+            flash("Your account has been blacklisted.", "danger")
+            return redirect(url_for("login"))
 
         if user.role == "staff" and not user.is_approved:
-            return "Waiting for Admin Approval"
+            flash("Your account is waiting for admin approval.", "warning")
+            return redirect(url_for("login"))
 
         session["user_id"] = user.id
         session["user_name"] = user.name
         session["role"] = user.role
 
+        flash(f"Welcome, {user.name}!", "success")
+
         if user.role == "admin":
-            return redirect("/admin")
+            return redirect(url_for("admin_dashboard"))
 
         elif user.role == "staff":
-            return redirect("/staff")
+            return redirect(url_for("staff_dashboard"))
 
         else:
-            return redirect("/user")
+            return redirect(url_for("user_dashboard"))
 
     return render_template("login.html")
 

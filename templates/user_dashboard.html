@@ -1,84 +1,161 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <title>User Dashboard</title>
-</head>
+{% block title %}
+User Dashboard
+{% endblock %}
 
-<body>
+{% block content %}
 
-    <h1>Welcome {{ session["user_name"] }}</h1>
+<h2 class="text-center mb-3">
+    Welcome, {{ session["user_name"] }}
+</h2>
 
-    <a href="/edit-profile">
-        <button>Edit Profile</button>
-    </a>
+<p class="text-center text-muted mb-5">
+    Explore treks, manage your bookings, and enjoy your next adventure.
+</p>
 
-    <br><br>
+<div class="row mb-5">
 
-    <a href="/my-history">
-        <button>My Trek History</button>
-    </a>
+    <div class="col-md-6 mb-3">
 
-    <br><br>
+        <a href="{{ url_for('edit_profile') }}" class="btn btn-outline-primary w-100">
+            <i class="bi bi-person-circle"></i>
+            Edit Profile
+        </a>
 
-    <h2>Search Treks</h2>
+    </div>
 
-    <form method="GET">
+    <div class="col-md-6 mb-3">
 
-        <input type="text" name="search" placeholder="Search Trek">
+        <a href="{{ url_for('my_history') }}" class="btn btn-outline-success w-100">
+            <i class="bi bi-clock-history"></i>
+            My Trek History
+        </a>
 
-        <select name="difficulty">
+    </div>
 
-            <option value="">All Difficulties</option>
+</div>
 
-            <option value="Easy">Easy</option>
-            <option value="Moderate">Moderate</option>
-            <option value="Hard">Hard</option>
+<div class="card shadow mb-5">
 
-        </select>
+    <div class="card-header bg-success text-white">
 
-        <input type="text" name="location" placeholder="Location">
+        <h5 class="mb-0">
+            Search Treks
+        </h5>
 
-        <button type="submit">
-            Search
-        </button>
+    </div>
 
-    </form>
+    <div class="card-body">
 
-    <hr>
+        <form method="GET">
 
-    <h2>Available Treks</h2>
+            <div class="row g-3">
 
-    {% if available_treks %}
+                <div class="col-md-4">
 
-    <table border="1" cellpadding="8">
+                    <input type="text" name="search" value="{{ request.args.get('search','') }}" class="form-control"
+                        placeholder="Search Trek">
 
-        <tr>
+                </div>
 
-            <th>Name</th>
-            <th>Location</th>
-            <th>Difficulty</th>
-            <th>Duration</th>
-            <th>Slots</th>
-            <th>Action</th>
+                <div class="col-md-4">
 
-        </tr>
+                    <select name="difficulty" class="form-select">
 
-        {% for trek in available_treks %}
+                        <option value="">All Difficulties</option>
 
-        <tr>
+                        <option value="Easy" {% if request.args.get("difficulty")=="Easy" %}selected{% endif %}>Easy
+                        </option>
 
-            <td>{{ trek.trek_name }}</td>
-            <td>{{ trek.location }}</td>
-            <td>{{ trek.difficulty }}</td>
-            <td>{{ trek.duration }}</td>
-            <td>{{ trek.available_slots }}</td>
+                        <option value="Moderate" {% if request.args.get("difficulty")=="Moderate" %}selected{% endif %}>
+                            Moderate</option>
 
-            <td>
+                        <option value="Hard" {% if request.args.get("difficulty")=="Hard" %}selected{% endif %}>Hard
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <input type="text" name="location" value="{{ request.args.get('location','') }}"
+                        class="form-control" placeholder="Location">
+
+                </div>
+
+            </div>
+
+            <div class="mt-3">
+
+                <button class="btn btn-success">
+                    <i class="bi bi-search"></i>
+                    Search
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<h3 class="mb-4">
+    Available Treks
+</h3>
+
+{% if available_treks %}
+
+<div class="row">
+
+    {% for trek in available_treks %}
+
+    <div class="col-md-6 col-lg-4 mb-4">
+
+        <div class="card shadow h-100">
+
+            <div class="card-body">
+
+                <h4 class="card-title">
+                    {{ trek.trek_name }}
+                </h4>
+
+                <p class="mb-2">
+
+                    <strong>Location:</strong>
+                    {{ trek.location }}
+
+                </p>
+
+                <p class="mb-2">
+
+                    <strong>Difficulty:</strong>
+
+                    <span class="badge bg-primary">
+                        {{ trek.difficulty }}
+                    </span>
+
+                </p>
+
+                <p class="mb-2">
+
+                    <strong>Duration:</strong>
+                    {{ trek.duration }} Days
+
+                </p>
+
+                <p class="mb-3">
+
+                    <strong>Available Slots:</strong>
+                    {{ trek.available_slots }}
+
+                </p>
 
                 <form action="/book/{{ trek.id }}" method="POST">
 
-                    <button type="submit">
+                    <button type="submit" class="btn btn-success w-100">
 
                         Book Trek
 
@@ -86,77 +163,125 @@
 
                 </form>
 
-            </td>
+            </div>
 
-        </tr>
+        </div>
 
-        {% endfor %}
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="alert alert-warning">
+
+    No treks available.
+
+</div>
+
+{% endif %}
+
+<hr class="my-5">
+
+<h3 class="mb-4">
+    My Bookings
+</h3>
+
+{% if booked_treks %}
+
+<div class="table-responsive">
+
+    <table class="table table-bordered table-hover align-middle">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>Trek</th>
+                <th>Booking Date</th>
+                <th>Status</th>
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for booking in booked_treks %}
+
+            <tr>
+
+                <td>{{ booking.trek.trek_name }}</td>
+
+                <td>{{ booking.booking_date }}</td>
+
+                <td>
+
+                    {% if booking.status=="Booked" %}
+
+                    <span class="badge bg-success">
+                        Booked
+                    </span>
+
+                    {% elif booking.status=="Cancelled" %}
+
+                    <span class="badge bg-danger">
+                        Cancelled
+                    </span>
+
+                    {% else %}
+
+                    <span class="badge bg-secondary">
+                        {{ booking.status }}
+                    </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    {% if booking.status=="Booked" %}
+
+                    <form action="/cancel-booking/{{ booking.id }}" method="POST">
+
+                        <button class="btn btn-outline-danger btn-sm">
+
+                            Cancel
+
+                        </button>
+
+                    </form>
+
+                    {% else %}
+
+                    -
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
 
     </table>
 
-    {% else %}
+</div>
 
-    <p>No treks available.</p>
+{% else %}
 
-    {% endif %}
+<div class="alert alert-info">
 
-    <hr>
+    You haven't booked any treks yet.
 
-    <h2>My Bookings</h2>
+</div>
 
-    {% if booked_treks %}
+{% endif %}
 
-    <table border="1" cellpadding="8">
-
-        <tr>
-            <th>Trek</th>
-            <th>Booking Date</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-
-        {% for booking in booked_treks %}
-
-        <tr>
-
-            <td>{{ booking.trek.trek_name }}</td>
-
-            <td>{{ booking.booking_date }}</td>
-
-            <td>{{ booking.status }}</td>
-
-            <td>
-
-                {% if booking.status == "Booked" %}
-
-                <form action="/cancel-booking/{{ booking.id }}" method="POST">
-
-                    <button type="submit">
-                        Cancel Booking
-                    </button>
-
-                </form>
-
-                {% else %}
-
-                -
-
-                {% endif %}
-
-            </td>
-
-        </tr>
-
-        {% endfor %}
-
-    </table>
-
-    {% else %}
-
-    <p>No bookings yet.</p>
-
-    {% endif %}
-
-</body>
-
-</html>
+{% endblock %}

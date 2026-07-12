@@ -1,70 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Users</title>
-</head>
+{% block title %}
+Manage Users
+{% endblock %}
 
-<body>
-    <h1>Manage Users</h1>
+{% block content %}
 
-    <hr>
+<h2 class="text-center mb-4">
+    Manage Users
+</h2>
 
-    {% if users|length == 0 %}
-    <p>No users registered yet.</p>
-    {% endif %}
+{% if users|length == 0 %}
 
-    {% for user in users %}
+<div class="alert alert-info">
+    No users registered yet.
+</div>
 
-    <h3>{{ user.name }}</h3>
+{% else %}
 
-    <p>Email : {{ user.email }}</p>
+<div class="card shadow">
 
-    <p>Phone : {{ user.phone }}</p>
+    <div class="card-body">
 
-    <p>
-        Blacklisted :
-        {% if user.is_blacklisted %}
-        Yes
-        {% else %}
-        No
-        {% endif %}
-    </p>
+        <div class="table-responsive">
 
-    {% if not user.is_blacklisted %}
+            <table class="table table-hover align-middle">
 
-    <form action="/blacklist-user/{{ user.id }}" method="POST">
+                <thead class="table-dark">
 
-        <button type="submit">
+                    <tr>
 
-            Blacklist User
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Status</th>
+                        <th>Action</th>
 
-        </button>
+                    </tr>
 
-    </form>
+                </thead>
 
-    {% else %}
+                <tbody>
 
-    <form action="/unblacklist-user/{{ user.id }}" method="POST">
+                    {% for user in users %}
 
-        <button type="submit">
+                    <tr>
 
-            Remove Blacklist
+                        <td>{{ user.name }}</td>
 
-        </button>
+                        <td>{{ user.email }}</td>
 
-    </form>
+                        <td>{{ user.phone }}</td>
 
-    {% endif %}
+                        <td>
 
-    <hr>
+                            {% if user.is_blacklisted %}
 
-    {% endfor %}
+                            <span class="badge bg-danger">
+                                Blacklisted
+                            </span>
 
-    <a href="/admin">Back to Dashboard</a>
+                            {% else %}
 
-</body>
+                            <span class="badge bg-success">
+                                Active
+                            </span>
 
-</html>
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if not user.is_blacklisted %}
+
+                            <form action="/blacklist-user/{{ user.id }}" method="POST">
+
+                                <button class="btn btn-danger btn-sm">
+                                    Blacklist
+                                </button>
+
+                            </form>
+
+                            {% else %}
+
+                            <form action="/unblacklist-user/{{ user.id }}" method="POST">
+
+                                <button class="btn btn-success btn-sm">
+                                    Remove Blacklist
+                                </button>
+
+                            </form>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="text-center mt-4">
+
+    <a href="/admin" class="btn btn-secondary">
+        Back to Dashboard
+    </a>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

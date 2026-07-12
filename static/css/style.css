@@ -1,0 +1,141 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f8f9fa;
+    color: #212529;
+}
+
+.navbar {
+    padding: 15px 0;
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.nav-link:hover {
+    color: #ffc107 !important;
+}
+
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+        url("../images/hero.jpg");
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px;
+    padding: 80px 50px;
+    color: white;
+    margin-bottom: 60px;
+}
+
+.hero img {
+    max-height: 380px;
+}
+
+.hero h1 {
+    font-weight: 700;
+}
+
+.hero p {
+    font-size: 1.1rem;
+}
+
+.btn {
+    border-radius: 8px;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.feature-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card i {
+    font-size: 3rem;
+}
+
+section {
+    margin-bottom: 70px;
+}
+
+footer {
+    margin-top: 80px;
+}
+
+footer h5 {
+    font-weight: 600;
+}
+
+.table {
+    background: white;
+}
+
+.form-control,
+.form-select {
+    border-radius: 8px;
+}
+
+.btn-success {
+    background: #198754;
+}
+
+.btn-success:hover {
+    background: #157347;
+}
+
+.btn-outline-light:hover {
+    color: black;
+}
+
+.shadow {
+    border-radius: 15px;
+}
+
+@media(max-width:768px) {
+
+    .hero {
+        padding: 50px 25px;
+        text-align: center;
+    }
+
+    .hero img {
+        margin-top: 30px;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+}
+
+.card h2 {
+    font-weight: 700;
+    color: #198754;
+}
+
+.card-header {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.btn {
+    padding: 10px;
+}
+
+.btn i {
+    margin-right: 6px;
+}

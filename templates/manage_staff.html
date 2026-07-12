@@ -1,94 +1,181 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Staff</title </head>
+{% block title %}
+Manage Staff
+{% endblock %}
 
-<body>
-    <h1>Manage Staff</h1>
+{% block content %}
 
-    <hr>
+<h2 class="text-center mb-4">
+    Manage Staff
+</h2>
 
-    {% for staff in staff_members %}
+<div class="card shadow">
 
-    <h3>{{ staff.name }}</h3>
+    <div class="card-body">
 
-    <p>Email : {{ staff.email }}</p>
+        <div class="table-responsive">
 
-    <p>Phone : {{ staff.phone }}</p>
+            <table class="table table-hover align-middle">
 
-    <p>Approved :
-        {% if staff.is_approved %}
-        Yes
-        {% else %}
-        No
-        {% endif %}
-    </p>
+                <thead class="table-dark">
 
-    <p>Blacklisted :
-        {% if staff.is_blacklisted %}
-        Yes
-        {% else %}
-        No
-        {% endif %}
-    </p>
+                    <tr>
 
-    <p>
-        Assigned Trek :
-        {% if staff.assigned_treks %}
-        {{ staff.assigned_treks[0].trek_name }}
-        {% else %}
-        Not Assigned
-        {% endif %}
-    </p>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Approval</th>
+                        <th>Blacklist</th>
+                        <th>Assigned Trek</th>
+                        <th>Actions</th>
 
-    {% if not staff.is_approved %}
-    <form action="/approve-staff/{{ staff.id }}" method="POST">
-        <button type="submit">Approve</button>
-    </form>
-    {% endif %}
+                    </tr>
 
-    {% if not staff.is_blacklisted %}
-    <form action="/blacklist-staff/{{ staff.id }}" method="POST">
-        <button type="submit">Blacklist</button>
-    </form>
-    {% else %}
-    <form action="/unblacklist-staff/{{ staff.id }}" method="POST">
-        <button type="submit">Remove Blacklist</button>
-    </form>
-    {% endif %}
+                </thead>
 
-    <form action="/assign-staff/{{ staff.id }}" method="POST">
+                <tbody>
 
-        <select name="trek_id">
+                    {% for staff in staff_members %}
 
-            {% for trek in treks %}
+                    <tr>
 
-            <option value="{{ trek.id }}">
-                {{ trek.trek_name }}
-            </option>
+                        <td>{{ staff.name }}</td>
 
-            {% endfor %}
+                        <td>{{ staff.email }}</td>
 
-        </select>
+                        <td>{{ staff.phone }}</td>
 
-        <button type="submit">
-            Assign Trek
-        </button>
+                        <td>
 
-    </form>
+                            {% if staff.is_approved %}
 
-    <hr>
+                            <span class="badge bg-success">
+                                Approved
+                            </span>
 
-    {% endfor %}
+                            {% else %}
 
-    <br>
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
 
-    <a href="/admin">Back to Dashboard</a>
+                            {% endif %}
 
+                        </td>
 
-</body>
+                        <td>
 
-</html>
+                            {% if staff.is_blacklisted %}
+
+                            <span class="badge bg-danger">
+                                Blacklisted
+                            </span>
+
+                            {% else %}
+
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if staff.assigned_treks %}
+
+                            {{ staff.assigned_treks[0].trek_name }}
+
+                            {% else %}
+
+                            <span class="text-muted">
+                                Not Assigned
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td style="min-width:220px;">
+
+                            {% if not staff.is_approved %}
+
+                            <form action="/approve-staff/{{ staff.id }}" method="POST" class="mb-2">
+
+                                <button class="btn btn-success btn-sm w-100">
+                                    Approve
+                                </button>
+
+                            </form>
+
+                            {% endif %}
+
+                            {% if not staff.is_blacklisted %}
+
+                            <form action="/blacklist-staff/{{ staff.id }}" method="POST" class="mb-2">
+
+                                <button class="btn btn-danger btn-sm w-100">
+                                    Blacklist
+                                </button>
+
+                            </form>
+
+                            {% else %}
+
+                            <form action="/unblacklist-staff/{{ staff.id }}" method="POST" class="mb-2">
+
+                                <button class="btn btn-warning btn-sm w-100">
+                                    Remove Blacklist
+                                </button>
+
+                            </form>
+
+                            {% endif %}
+
+                            <form action="/assign-staff/{{ staff.id }}" method="POST">
+
+                                <select name="trek_id" class="form-select mb-2">
+
+                                    {% for trek in treks %}
+
+                                    <option value="{{ trek.id }}">
+                                        {{ trek.trek_name }}
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                                <button class="btn btn-primary btn-sm w-100">
+                                    Assign Trek
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="text-center mt-4">
+
+    <a href="/admin" class="btn btn-secondary">
+        Back to Dashboard
+    </a>
+
+</div>
+
+{% endblock %}
